@@ -1,0 +1,22 @@
+<application>
+  <component name="ExternalToolsSettings">
+    <option name="tools">
+      <list>
+        <ExternalTool>
+          <option name="description" value="Run PyCompileCheck analysis on current project" />
+          <option name="group" value="PyCompileCheck" />
+          <option name="name" value="PyCompileCheck" />
+          <option name="options" value="" />
+          <option name="parameters" value="" />
+          <option name="program" value="$ProjectFileDir$/run.sh" />
+          <option name="showConsole" value="ALWAYS" />
+          <option name="showInEditor" value="false" />
+          <option name="workingDirectory" value="$ProjectFileDir$" />
+        </ExternalTool>
+      </list>
+    </option>
+  </component>
+  <component name="Keymap">
+    <keyboard-shortcut first-keystroke="ctrl shift P" second-keystroke="" />
+  </component>
+</application> 

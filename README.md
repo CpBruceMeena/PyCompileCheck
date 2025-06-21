@@ -25,6 +25,7 @@ chmod +x run.sh
 
 ## Usage
 
+### Command Line
 Run the analyzer on your project:
 ```bash
 ./run.sh
@@ -36,6 +37,37 @@ When prompted, enter the path to your Python project. The tool will:
 3. Add TODO comments to modified files
 4. Store metadata about the project structure
 
+### PyCharm Integration
+
+#### Method 1: External Tool (Recommended)
+
+1. **Import Configuration**:
+   - Copy `pycharm-config.xml` to your PyCharm configuration directory
+   - Or manually configure the external tool
+
+2. **Manual Setup**:
+   - Go to `File > Settings > Tools > External Tools`
+   - Add new tool with:
+     - Name: `PyCompileCheck`
+     - Program: `$ProjectFileDir$/run.sh`
+     - Working directory: `$ProjectFileDir$`
+
+3. **Usage**:
+   - Right-click on project folder → Select "PyCompileCheck"
+   - Or use `Tools > External Tools > PyCompileCheck`
+   - Or press `Ctrl+Shift+P` (if configured)
+
+#### Method 2: File Watcher
+- Configure PyCharm to run PyCompileCheck automatically when Python files change
+
+#### Method 3: Pre-commit Hook
+```bash
+# Create .git/hooks/pre-commit
+#!/bin/bash
+./run.sh .
+chmod +x .git/hooks/pre-commit
+```
+
 ## How It Works
 
 1. **Project Analysis**:
@@ -45,9 +77,8 @@ When prompted, enter the path to your Python project. The tool will:
 
 2. **Change Detection**:
    - Compares current state with previous analysis
-   - Detects content modifications
-   - Tracks import statement changes
-   - Monitors file size changes
+   - Detects: content changes, size changes, import modifications
+   - Generates specific TODO comments for each change type
 
 3. **TODO Comments**:
    - Adds detailed TODO comments to modified files
@@ -65,6 +96,12 @@ When changes are detected, the tool adds comments like:
 ```python
 # TODO: PyCompileCheck detected changes: content modified, size changed from 1024 to 2048 bytes, imports modified
 ```
+
+## IDE Support
+
+- **PyCharm**: Full integration via external tools
+- **VS Code**: Can be configured as a task
+- **Other IDEs**: Works as command-line tool
 
 ## Contributing
 
