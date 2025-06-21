@@ -1,0 +1,40 @@
+<idea-plugin>
+    <id>com.pycompilecheck.plugin</id>
+    <name>PyCompileCheck</name>
+    <vendor email="support@pycompilecheck.com" url="https://github.com/CpBruceMeena/PyCompileCheck">PyCompileCheck Team</vendor>
+
+    <description><![CDATA[
+    PyCompileCheck - Python static analysis tool for Django projects with real-time visual feedback.
+    
+    Features:
+    - Real-time change detection with visual indicators
+    - Red/yellow underlines for modified files
+    - Background analysis on file save
+    - Import analysis and tracking
+    - Metadata management
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.python</depends>
+
+    <!-- Register the inspection -->
+    <extensions defaultExtensionNs="com.intellij">
+        <localInspection 
+            language="Python" 
+            displayName="PyCompileCheck Analysis" 
+            groupName="PyCompileCheck" 
+            enabledByDefault="true" 
+            level="WARNING"
+            implementationClass="com.pycompilecheck.PyCompileCheckInspection"/>
+    </extensions>
+
+    <!-- Project service for file watching -->
+    <projectService serviceImplementation="com.pycompilecheck.PyCompileCheckProjectService"/>
+
+    <!-- Project component to start/stop file watcher -->
+    <projectComponents>
+        <component>
+            <implementation-class>com.pycompilecheck.PyCompileCheckProjectComponent</implementation-class>
+        </component>
+    </projectComponents>
+</idea-plugin> 

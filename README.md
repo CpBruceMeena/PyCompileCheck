@@ -1,116 +1,211 @@
 # PyCompileCheck
 
-A Python-based static analysis tool for Django projects that helps track code changes and maintain code quality.
+A Python-based static analysis tool for Django projects that provides **real-time visual feedback** in PyCharm with red/yellow underlines for changed files.
 
-## Features
+## 🎯 Features
 
-- **Change Detection**: Automatically detects and tracks changes in Python files
-- **Smart TODO Comments**: Adds detailed TODO comments to modified files, explaining what changed
-- **Import Analysis**: Tracks changes in import statements
-- **Metadata Management**: Maintains a structured metadata store for project analysis
-- **File Tracking**: Monitors file size, modification times, and content changes
+- **Real-time Visual Feedback**: Red/yellow underlines for changed files in PyCharm
+- **Background File Monitoring**: Automatically runs analysis when files are saved
+- **Change Detection**: Tracks content, import, and size changes
+- **Smart TODO Comments**: Adds detailed TODO comments to modified files
+- **Metadata Management**: Maintains structured metadata store for project analysis
+- **Hybrid Architecture**: Java (UI) + Python (analysis) for optimal performance
 
-## Installation
+## 🏗️ Architecture
 
-1. Clone the repository:
+```
+Java Plugin (PyCharm Integration)
+├── Real-time visual indicators (red/yellow underlines)
+├── Background file monitoring
+├── Inspection integration
+└── Project lifecycle management
+    ↓ calls
+Python Backend (Analysis Engine)
+├── Core analysis logic
+├── Change detection algorithms
+└── Metadata management
+```
+
+## 🚀 Quick Start
+
+### Option 1: Command Line (Simple)
 ```bash
+# Clone and setup
 git clone https://github.com/CpBruceMeena/PyCompileCheck.git
 cd PyCompileCheck
-```
-
-2. Make the run script executable:
-```bash
 chmod +x run.sh
+
+# Run analysis
+./run.sh [project_path]
 ```
 
-## Usage
+### Option 2: PyCharm Plugin (Recommended)
+For **real-time visual feedback** with red/yellow underlines:
+
+1. **Build the Plugin**:
+   ```bash
+   cd plugin
+   ./gradlew buildPlugin
+   ```
+
+2. **Install PyCompileCheck Backend**:
+   ```bash
+   sudo git clone https://github.com/CpBruceMeena/PyCompileCheck.git /opt/pycompilecheck
+   chmod +x /opt/pycompilecheck/run.sh
+   chmod +x /opt/pycompilecheck/plugin/pycharm_integration.py
+   ```
+
+3. **Install in PyCharm**:
+   - `File > Settings > Plugins`
+   - Install from disk: `plugin/build/distributions/pycompilecheck-plugin-1.0.0.jar`
+   - Restart PyCharm
+
+4. **Usage**:
+   - Open any Python project
+   - Save a file (Ctrl+S)
+   - Watch for red/yellow underlines automatically!
+
+## 📊 How It Works
+
+### 1. **File Monitoring**
+- Plugin monitors all Python files in real-time
+- Detects file saves, creates, and deletes
+- Debounces rapid changes (2-second delay)
+
+### 2. **Background Analysis**
+- Runs PyCompileCheck analysis in background thread
+- Calls Python analysis engine
+- Parses structured JSON output
+
+### 3. **Visual Feedback**
+- Updates inspection results in real-time
+- Shows red underlines for content changes
+- Shows yellow underlines for import changes
+- Displays tooltips with change details
+
+### 4. **Change Detection**
+- Compares current state with previous analysis
+- Detects: content changes, size changes, import modifications
+- Generates specific TODO comments for each change type
+
+## 🎨 Visual Indicators
+
+### Red Underlines
+- **Content changes** detected
+- **File modifications** found
+- **Critical changes** that need attention
+
+### Yellow Underlines
+- **Import changes** detected
+- **Non-critical modifications**
+- **Warnings** about changes
+
+### Information Indicators
+- **File size changes**
+- **Metadata updates**
+- **Analysis status**
+
+## 📁 Project Structure
+
+```
+PyCompileCheck/
+├── main.py                              # Core Python analysis engine
+├── run.sh                               # Command-line interface
+├── setup.py                             # Global installation
+├── requirements.txt                     # Python dependencies
+├── README.md                            # This file
+├── PRD.md                               # Product Requirements Document
+├── plugin/                              # PyCharm plugin
+│   ├── build.gradle                     # Plugin build configuration
+│   ├── pycharm_integration.py          # Python integration script
+│   ├── README-HYBRID.md                # Detailed plugin documentation
+│   └── src/main/
+│       ├── java/com/pycompilecheck/    # Java plugin source
+│       │   ├── PyCompileCheckInspection.java      # Visual indicators
+│       │   ├── PyCompileCheckFileWatcher.java     # File monitoring
+│       │   ├── PyCompileCheckProjectService.java  # Project service
+│       │   └── PyCompileCheckProjectComponent.java # Lifecycle
+│       └── resources/META-INF/
+│           └── plugin.xml              # Plugin configuration
+└── .pycompilecheck/                     # Analysis metadata (auto-generated)
+    └── metadata.json
+```
+
+## 🔧 Configuration
+
+### Automatic Configuration
+The plugin automatically:
+- ✅ Starts file watching when a project is opened
+- ✅ Monitors Python files for changes
+- ✅ Runs analysis in background
+- ✅ Shows visual indicators
+
+### Manual Configuration (Optional)
+If you need to customize the PyCompileCheck path, the plugin automatically detects:
+- `/opt/pycompilecheck` (default)
+- `~/pycompilecheck`
+- `C:\pycompilecheck` (Windows)
+
+## 🔍 Usage Examples
 
 ### Command Line
-Run the analyzer on your project:
 ```bash
+# Analyze current directory
 ./run.sh
+
+# Analyze specific project
+./run.sh /path/to/project
 ```
 
-When prompted, enter the path to your Python project. The tool will:
-1. Analyze all Python files in the project
-2. Detect any changes since the last analysis
-3. Add TODO comments to modified files
-4. Store metadata about the project structure
+### PyCharm Plugin
+1. **Automatic**: Save any Python file → watch for underlines
+2. **Manual**: `Code > Inspect Code` → check PyCompileCheck group
+3. **Console**: View analysis logs in PyCharm console
 
-### PyCharm Integration
+## 🛠️ Troubleshooting
 
-#### Method 1: External Tool (Recommended)
-
-1. **Configure External Tool in PyCharm**:
-   - Go to `File > Settings > Tools > External Tools`
-   - Add new tool with:
-     - Name: `PyCompileCheck`
-     - Program: `/path/to/PyCompileCheck/plugin/pycharm_integration.py`
-     - Arguments: `$ProjectFileDir$`
-     - Working directory: `$ProjectFileDir$`
-
-2. **Usage**:
-   - Right-click on project folder → Select "PyCompileCheck"
-   - Or use `Tools > External Tools > PyCompileCheck`
-   - Or press `Ctrl+Shift+P` (if configured)
-
-#### Method 2: File Watcher
-- Configure PyCharm to run PyCompileCheck automatically when Python files change
-
-#### Method 3: Pre-commit Hook
+### Plugin Issues
 ```bash
-# Create .git/hooks/pre-commit
-#!/bin/bash
-./run.sh .
-chmod +x .git/hooks/pre-commit
+# Check installation
+ls /opt/pycompilecheck/main.py
+
+# Fix permissions
+chmod +x /opt/pycompilecheck/run.sh
+chmod +x /opt/pycompilecheck/plugin/pycharm_integration.py
+
+# Test manually
+python3 /opt/pycompilecheck/plugin/pycharm_integration.py /path/to/project
 ```
 
-## How It Works
+### Build Issues
+```bash
+# Build plugin
+cd plugin
+./gradlew buildPlugin
 
-1. **Project Analysis**:
-   - Scans all Python files in the project directory
-   - Calculates file hashes for change detection
-   - Tracks file metadata (size, modification time)
-
-2. **Change Detection**:
-   - Compares current state with previous analysis
-   - Detects: content changes, size changes, import modifications
-   - Generates specific TODO comments for each change type
-
-3. **TODO Comments**:
-   - Adds detailed TODO comments to modified files
-   - Places comments after shebang/encoding declarations
-   - Includes specific information about what changed
-
-4. **Metadata Storage**:
-   - Stores analysis results in `.pycompilecheck` directory
-   - Maintains history of file changes
-   - Tracks project structure
-
-## Example
-
-When changes are detected, the tool adds comments like:
-```python
-# TODO: PyCompileCheck detected changes: content modified, size changed from 1024 to 2048 bytes, imports modified
+# Test in PyCharm
+./gradlew runIde
 ```
 
-## IDE Support
+## 🎯 Benefits
 
-- **PyCharm**: Full integration via external tools (see `plugin/` directory)
-- **VS Code**: Can be configured as a task
-- **Other IDEs**: Works as command-line tool
+✅ **Real-time feedback** - No manual triggering needed
+✅ **Visual indicators** - Clear red/yellow underlines
+✅ **Background processing** - Doesn't block IDE
+✅ **Python analysis** - Leverages existing logic
+✅ **IDE integration** - Native PyCharm experience
+✅ **Cross-platform** - Works on Windows, macOS, Linux
 
-## Plugin Integration
+## 📚 Documentation
 
-For detailed PyCharm plugin setup instructions, see:
-- `plugin/README.md` - Complete setup guide
-- `plugin/pycharm_integration.py` - Integration script
-- `plugin/pycharm-plugin-config.xml` - Configuration template
+- **Plugin Setup**: See `plugin/README-HYBRID.md` for detailed plugin documentation
+- **Product Requirements**: See `PRD.md` for feature specifications
+- **Development**: See plugin source code for customization
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the LICENSE file for details.

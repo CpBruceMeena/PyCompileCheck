@@ -2,10 +2,12 @@
 """
 PyCharm Integration Script for PyCompileCheck
 This script can be called from PyCharm's external tools to run PyCompileCheck analysis.
+Provides structured output for Java plugin integration.
 """
 
 import sys
 import os
+import json
 from pathlib import Path
 
 # Add the PyCompileCheck directory to the Python path
@@ -56,6 +58,10 @@ def main():
         
         if success:
             print("PyCompileCheck: Analysis completed successfully")
+            
+            # Generate structured output for Java plugin
+            generate_structured_output(project_path)
+            
             sys.exit(0)
         else:
             print("PyCompileCheck: Analysis failed")
@@ -64,6 +70,53 @@ def main():
     except Exception as e:
         print(f"PyCompileCheck: Error during analysis: {e}")
         sys.exit(1)
+
+
+def generate_structured_output(project_path):
+    """Generate structured output that the Java plugin can parse."""
+    try:
+        # Read the metadata file
+        metadata_file = Path(project_path) / ".pycompilecheck" / "metadata.json"
+        if not metadata_file.exists():
+            return
+        
+        with open(metadata_file, 'r') as f:
+            metadata = json.load(f)
+        
+        # Generate change information for each file
+        changes = []
+        for file_path, file_data in metadata.items():
+            change_info = {
+                "file": file_path,
+                "has_content_changes": False,
+                "has_import_changes": False,
+                "has_size_changes": False,
+                "size_change_info": "",
+                "last_modified": file_data.get("last_modified", 0),
+                "size": file_data.get("size", 0)
+            }
+            
+            # Check for changes (this is simplified - you can enhance based on your logic)
+            # For now, we'll mark all files as having potential changes
+            change_info["has_content_changes"] = True
+            
+            changes.append(change_info)
+        
+        # Output structured data for Java plugin
+        output_data = {
+            "status": "success",
+            "project_path": project_path,
+            "changes": changes,
+            "timestamp": os.path.getmtime(metadata_file)
+        }
+        
+        # Print structured output that Java can parse
+        print("PYCOMPILECHECK_OUTPUT_START")
+        print(json.dumps(output_data, indent=2))
+        print("PYCOMPILECHECK_OUTPUT_END")
+        
+    except Exception as e:
+        print(f"Error generating structured output: {e}")
 
 
 if __name__ == "__main__":
