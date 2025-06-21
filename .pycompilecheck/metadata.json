@@ -1,0 +1,81 @@
+{
+  "setup.py": {
+    "last_modified": 1750511394.2545574,
+    "size": 599,
+    "hash": "baea77dfb94eeec1bc5dccf8226bf3608e0414df470b45a7a6f1ae3e2f2be457",
+    "imports": [
+      "from setuptools import setup, find_packages"
+    ],
+    "last_analyzed": "2025-06-21T18:50:46.856272"
+  },
+  "test_file.py": {
+    "last_modified": 1750510773.326242,
+    "size": 249,
+    "hash": "cc0c85f225d34d94cd65bb3710b1d58d2784f22dfe3585af6ba175cdede3639a",
+    "imports": [
+      "import os",
+      "import sys"
+    ],
+    "last_analyzed": "2025-06-21T18:50:46.856680"
+  },
+  "watch.py": {
+    "last_modified": 1750511141.347693,
+    "size": 2504,
+    "hash": "f59742f5a7aa14b9a55adfd08387aeba29684ee23c8ae3e1a47902a2f3f0111d",
+    "imports": [
+      "import time",
+      "import os",
+      "import sys",
+      "from pathlib import Path",
+      "from watchdog.observers import Observer",
+      "from watchdog.events import FileSystemEventHandler",
+      "import subprocess",
+      "import threading"
+    ],
+    "last_analyzed": "2025-06-21T18:50:46.856998"
+  },
+  "main.py": {
+    "last_modified": 1750510964.3953204,
+    "size": 5411,
+    "hash": "571acb8d394d13edded5b87b5d5f092be5fdaa5a6a55dac5a1aadf25b3e7ad05",
+    "imports": [
+      "import os",
+      "import sys",
+      "import json",
+      "import hashlib",
+      "from datetime import datetime",
+      "from pathlib import Path",
+      "from typing import Dict, List, Optional, Set, Tuple"
+    ],
+    "last_analyzed": "2025-06-21T18:50:46.857160"
+  },
+  "plugin/pycharm_integration.py": {
+    "last_modified": 1750511987.9778087,
+    "size": 1983,
+    "hash": "7f71bb6bd090e79ae5ad91f1019241c43cff187dfa93f566115afe8bac9b262c",
+    "imports": [
+      "import sys",
+      "import os",
+      "from pathlib import Path",
+      "from pycompilecheck_plugin import run_analysis, run_from_cli",
+      "from main import ProjectAnalyzer"
+    ],
+    "last_analyzed": "2025-06-21T18:50:46.857963"
+  },
+  "plugin/src/main/python/pycompilecheck_plugin.py": {
+    "last_modified": 1750511977.9874382,
+    "size": 5562,
+    "hash": "18fe5b084a09919278874b41c77a8d239a8bb06ec6974400c63666f51ecd204b",
+    "imports": [
+      "import os",
+      "import sys",
+      "import subprocess",
+      "import threading",
+      "from pathlib import Path",
+      "from typing import Optional",
+      "from main import ProjectAnalyzer",
+      "import sys"
+    ],
+    "last_analyzed": "2025-06-21T18:50:46.858553"
+  }
+}

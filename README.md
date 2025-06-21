@@ -41,18 +41,15 @@ When prompted, enter the path to your Python project. The tool will:
 
 #### Method 1: External Tool (Recommended)
 
-1. **Import Configuration**:
-   - Copy `pycharm-config.xml` to your PyCharm configuration directory
-   - Or manually configure the external tool
-
-2. **Manual Setup**:
+1. **Configure External Tool in PyCharm**:
    - Go to `File > Settings > Tools > External Tools`
    - Add new tool with:
      - Name: `PyCompileCheck`
-     - Program: `$ProjectFileDir$/run.sh`
+     - Program: `/path/to/PyCompileCheck/plugin/pycharm_integration.py`
+     - Arguments: `$ProjectFileDir$`
      - Working directory: `$ProjectFileDir$`
 
-3. **Usage**:
+2. **Usage**:
    - Right-click on project folder → Select "PyCompileCheck"
    - Or use `Tools > External Tools > PyCompileCheck`
    - Or press `Ctrl+Shift+P` (if configured)
@@ -99,9 +96,16 @@ When changes are detected, the tool adds comments like:
 
 ## IDE Support
 
-- **PyCharm**: Full integration via external tools
+- **PyCharm**: Full integration via external tools (see `plugin/` directory)
 - **VS Code**: Can be configured as a task
 - **Other IDEs**: Works as command-line tool
+
+## Plugin Integration
+
+For detailed PyCharm plugin setup instructions, see:
+- `plugin/README.md` - Complete setup guide
+- `plugin/pycharm_integration.py` - Integration script
+- `plugin/pycharm-plugin-config.xml` - Configuration template
 
 ## Contributing
 

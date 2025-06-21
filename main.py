@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# TODO: PyCompileCheck detected changes: content modified, size changed from 5288 to 5411 bytes
 """
 Main entry point for PyCompileCheck.
 Handles project analysis and metadata management.
@@ -122,11 +123,15 @@ class ProjectAnalyzer:
             json.dump(self.current_metadata, f, indent=2)
 
 def main():
-    if len(sys.argv) != 2:
-        print("Usage: python main.py <project_path>")
+    # If no argument is given, use current directory
+    if len(sys.argv) == 1:
+        project_path = '.'
+    elif len(sys.argv) == 2:
+        project_path = sys.argv[1]
+    else:
+        print("Usage: python main.py [project_path]")
         sys.exit(1)
     
-    project_path = sys.argv[1]
     analyzer = ProjectAnalyzer(project_path)
     analyzer.setup()
     analyzer.analyze_project()
